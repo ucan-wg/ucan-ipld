@@ -9,13 +9,13 @@
 * [Irakli Gozalishvili](https://github.com/Gozala), DAG House
 * [Brooklyn Zelenka](https://github.com/expede), [Fission](https://fission.codes)
 
-# 0 Abstract
-
-The core UCAN specification is defined as a JWT to make it easily adoptable with existing tools, and as a common format for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-efficient formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between many serialization formats, while still being able to encode as JWT for compatibility.
-
 ## Language
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://datatracker.ietf.org/doc/html/rfc2119).
+
+# 0 Abstract
+
+The core UCAN specification is defined as a JWT to make it easily adoptable with existing tools, and as a common format for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-efficient formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between many serialization formats, while still being able to encode as JWT for compatibility.
 
 # 1 Introduction
 
@@ -104,9 +104,7 @@ type DID = String
 
 ## 2.7 Proof
 
-As of UCAN 0.9, all proofs MUST be given as links.
-
-Note that UCANs MAY be inlined via the [identity multihash (`0x00`)](https://github.com/multiformats/multicodec/blob/master/table.csv#L2) CID.
+As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be inlined via the [identity multihash (`0x00`)](https://github.com/multiformats/multicodec/blob/master/table.csv#L2) CID.
 
 ``` ipldsch
 &UCAN
@@ -128,12 +126,13 @@ To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per the [
 
 ## 3.1 Encoding Header
 
-When serialized to JWT, an encoding header MUST be included in the format: `enc: "jcs"`. This signals that the 
+When serialized to JWT, an encoding header MUST be included in the format: `enc: "jcs"`. This signals that the UCAN was intended to be encoding agnostic, and that a JWT may be reencoded. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
 
 ### 3.1.1 Example
 
 ``` javascript
 {"alg":"RS256","enc":"jcs","typ":"JWT","ucv":"0.9.0"}
+            /* ^^^^^^^^^^^ */
 ```
 
 # 4 Acknowledgements
