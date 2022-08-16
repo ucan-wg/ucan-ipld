@@ -19,12 +19,11 @@ type UCAN struct {
   field proofs default []
 }
 
-
 type Capability struct {
   with Resource
   can Ability
   -- Any additional domain specific details and/or restrictions of the capability
-  caveats { String: Any }
+  extension { String: Any }
 }
 
 type Fact { String: Any }
@@ -41,8 +40,5 @@ type Ability = String
 -- 3. Signing via issuers private key
 type Signature = Bytes
 
--- did:key encoded as multicodec tagged public key
--- 0xed       Ed25519
--- 0x1205     RSA
--- other DIDs could also be used by encoding it in UTF8 string
-type DID = Bytes
+-- did:key encoded as a DID
+type DID = String

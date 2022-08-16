@@ -11,17 +11,21 @@
 
 # 0 Abstract
 
-The core UCAN specification is defined as a JWT to make it easily adoptable with existing tools, and as a lingua franca for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-readable formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between formats, while still being able to encode as JWT for compatibility.
+The core UCAN specification is defined as a JWT to make it easily adoptable with existing tools, and as a common format for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-efficient formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between many serialization formats, while still being able to encode as JWT for compatibility.
 
 ## Language
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
 # 1 Introduction
 
 ## 1.1 Motivation
 
-[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data. UCAN fits this model very nicely, but JWTs are not determinstic due to whitespace and key ordering.
+[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data. UCAN structurally fits this model well.
+
+For reasons of _______
+
+However JWTs are not determinstic due to whitespace and key ordering.
 
 # 2 IPLD Format
 
@@ -118,23 +122,18 @@ type Signature = Bytes
 
 # 3 JWT Canonicalization
 
-Per the core UCAN spec, all implementations MUST support JWT encoding. To canonicalize the JWT, the JSON segments MUST be encoded per the [JSON Canonicalization Scheme (JCS)](https://www.rfc-editor.org/rfc/rfc8785), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
+Per the core UCAN spec, all implementations MUST support JWT encoding. This provides a common representation that all implementations can understand. JWT canonicalization allows for an IPLD UCAN to be expressed as a JWT, retain the JWT signature scheme, and so on for compatibilty, while retaining the ability to translate into other formats for storage or transmission among IPLD-enabled peers.
 
-## 3.1 Deterministic Flag
+To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per the [JSON Canonicalization Scheme (JCS)](https://www.rfc-editor.org/rfc/rfc8785), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
 
-When serialized to JWT, a deterministic encoding flag MUST be included in the JWT header `enc: "ipld"`.
+## 3.1 Encoding Header
 
-FIXME decide on this vs `enc: "JCS"`
+When serialized to JWT, an encoding header MUST be included in the format: `enc: "jcs"`. This signals that the 
 
 ### 3.1.1 Example
 
 ``` javascript
-{
-  "ucv": "0.9.0",
-  "typ": "JWT",
-  "alg": "EdDSA",
-  "enc": "ipld" // Canonicalized for IPLD
-}
+{"alg":"RS256","enc":"jcs","typ":"JWT","ucv":"0.9.0"}
 ```
 
 # 4 Acknowledgements
