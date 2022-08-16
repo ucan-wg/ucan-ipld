@@ -19,3 +19,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 # 1 Introduction
 
+## 1.1 Motivation
+
+[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data. UCAN fits this model very nicely, but JWTs are not determinstic due to whitespace and key ordering.
+
+# 2 IPLD Format
+
