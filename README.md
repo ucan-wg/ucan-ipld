@@ -118,11 +118,11 @@ Per the core UCAN spec, all implementations MUST support JWT encoding. This prov
 
 To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per [`dag-json`](https://ipld.io/specs/codecs/dag-json/spec/), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
 
-UCAN canonicalization is signalled by the the CID. If no cacnonicalization is used, the CID MUST use the [raw multicodec](https://github.com/multiformats/multicodec/blob/master/table.csv#L39). Canonicalized UCANs MAY use any other codec, including but not limited to `dag-json` and `dag-cbor`.
+  * [ ] UCAN canonicalization is signalled by the the CID. If no canonicalization is used, the CID MUST use the [raw multicodec](https://github.com/multiformats/multicodec/blob/master/table.csv#L39). Canonicalized UCANs MAY use any other codec, including but not limited to `dag-json` and `dag-cbor`.
 
 ## 3.1 Non-IPLD Validator CID Handling
 
-Validators that have not implemented this specification MUST be provided JWT-encoded UCANs. These validators will be unable to validate the CID in the proofs field. This is not strictly a problem in a semi-trusted scenario, as UCAN only depends on the existance (not the specific CID) of a valid proof for the capabilities being claimed. The security risk is for a malicious peer to provide very long but ultimately invalid proof chains as a denial-of-service vector. This is the case for any validator that does not check the CID hash upon receipt.
+Validators that have not implemented this specification MUST be provided JWT-encoded UCANs. These validators will be unable to validate the CID in the proofs field. This is not strictly a problem in a semi-trusted scenario, as UCAN only depends on the existence (not the specific CID) of a valid proof for the capabilities being claimed. The security risk is for a malicious peer to provide very long but ultimately invalid proof chains as a denial-of-service vector. This is the case for any validator that does not check the CID hash upon receipt.
 
 # 4 Acknowledgments
 

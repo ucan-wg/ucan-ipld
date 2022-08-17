@@ -1,5 +1,6 @@
 CIDs
 Canonicalization
+Canonicalized
 DIDs
 IPLD
 IPLD-enabled
@@ -12,11 +13,13 @@ TTL
 UCAN
 UCAN's
 UCANs
+Validators
 Zelenka
 auth
 backend
 canonicalization
 canonicalize
+codec
 conformant
 delimeters
 dholms
@@ -28,6 +31,7 @@ multiformat
 namespaced
 requestor's
 responder
+signalled
 signalling
 trustless
 unpadded
