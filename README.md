@@ -116,18 +116,13 @@ type Signature = Bytes
 
 Per the core UCAN spec, all implementations MUST support JWT encoding. This provides a common representation that all implementations can understand. JWT canonicalization allows for an IPLD UCAN to be expressed as a JWT, retain the JWT signature scheme, and so on for compatibility, while retaining the ability to translate into other formats for storage or transmission among IPLD-enabled peers.
 
-To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per the [JSON Canonicalization Scheme (JCS)](https://www.rfc-editor.org/rfc/rfc8785), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
+To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per [`dag-json`](https://ipld.io/specs/codecs/dag-json/spec/), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
 
-## 3.1 Encoding Header
- 
-When serialized to JWT, an encoding header MUST be included in the format: `"enc":"JCS"`. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
+UCAN canonicalization is signalled by the the CID. If no cacnonicalization is used, the CID MUST use the [raw multicodec](https://github.com/multiformats/multicodec/blob/master/table.csv#L39). Canonicalized UCANs MAY use any other codec, including but not limited to `dag-json` and `dag-cbor`.
 
-### 3.1.1 Example
+## 3.1 Non-IPLD Validator CID Handling
 
-``` javascript
-{"alg":"RS256","enc":"JCS","typ":"JWT","ucv":"0.9.0"}
-//             ^^^^^^^^^^^
-```
+Validators that have not implemented this specification MUST be provided JWT-encoded UCANs. These validators will be unable to validate the CID in the proofs field. This is not strictly a problem in a semi-trusted scenario, as UCAN only depends on the existance (not the specific CID) of a valid proof for the capabilities being claimed. The security risk is for a malicious peer to provide very long but ultimately invalid proof chains as a denial-of-service vector. This is the case for any validator that does not check the CID hash upon receipt.
 
 # 4 Acknowledgments
 
