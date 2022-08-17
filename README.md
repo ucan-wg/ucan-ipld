@@ -6,6 +6,7 @@
 
 ## Authors
 
+* [Hugo Dias](https://github.com/hugomrdias), DAG House
 * [Irakli Gozalishvili](https://github.com/Gozala), DAG House
 * [Brooklyn Zelenka](https://github.com/expede), [Fission](https://fission.codes)
 
