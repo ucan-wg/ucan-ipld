@@ -119,7 +119,7 @@ Per the core UCAN spec, all implementations MUST support JWT encoding. This prov
 
 To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per [`dag-json`](https://ipld.io/specs/codecs/dag-json/spec/), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
 
-  * [ ] UCAN canonicalization is signalled by the the CID. If no canonicalization is used, the CID MUST use the [raw multicodec](https://github.com/multiformats/multicodec/blob/master/table.csv#L39). Canonicalized UCANs MAY use any other codec, including but not limited to `dag-json` and `dag-cbor`.
+UCAN canonicalization is signalled by CID. If no canonicalization is used, the CID MUST use the [raw multicodec](https://github.com/multiformats/multicodec/blob/master/table.csv#L39). Canonicalized UCANs that wish to signal this encoding MUST use [any other CID codec](https://github.com/multiformats/multicodec/blob/master/table.csv), including but not limited to `dag-json` and `dag-cbor`.
 
 ## 3.1 Non-IPLD Validator CID Handling
 
