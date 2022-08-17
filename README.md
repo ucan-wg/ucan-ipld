@@ -15,23 +15,15 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 # 0 Abstract
 
-The core UCAN specification is defined as a JWT to make it easily adoptable with existing tools, and as a common format for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-efficient formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between many serialization formats, while still being able to encode as JWT for compatibility.
+[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data forming any DAG. This consistent format provides a convenient pivot between many serializations of the same data. Being a chained token model, UCANs can be very naturally expressed via IPLD. However, JWTs are not determinstic due to whitespace and key ordering. This specification defines an IPLD Schema for UCAN, and a canonical JWT serialization for compatibility with all other clients.
 
-# 1 Introduction
+# 1 Motivation
 
-## 1.1 Motivation
+The [core UCAN specification](https://github.com/ucan-wg/spec) is defined as a JWT to make it easily adoptable with existing tools, and as a common format for all implementations. There are many cases where different encodings are preferred for reasons such as compactness, machine-efficient formats, and so on. This specification outlines a format based on IPLD that can be deterministically encoded and decoded between many serialization formats, while still being able to encode as JWT for compatibility.
 
-[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data. UCAN structurally fits this model well.
+# 2 IPLD Schema
 
-For reasons of _______
-
-However JWTs are not determinstic due to whitespace and key ordering.
-
-# 2 IPLD Format
-
-## 2.1 Container
-
-Unlike the JWT format, the IPLD encoding of UCAN does not require separate header, claims, and signature fields.
+Unlike a JWT, the IPLD encoding of UCAN does not require separate header, claims, and signature fields.
 
 ```ipldsch
 type UCAN struct {
@@ -54,6 +46,14 @@ type UCAN struct {
 }
 ```
 
+## 2.1 DID
+
+DIDs MUST be encoded as [DID](https://www.w3.org/TR/did-core/)s. The [`did:key` method](https://w3c-ccg.github.io/did-method-key/) is RECOMMENDED as it is self-contained.
+
+``` ipldsch
+type DID = String
+```
+
 ## 2.2 Capability
 
 ``` ipldsch
@@ -64,21 +64,7 @@ type Capability struct {
 } representation map
 ```
 
-### 2.2.1 Extensions
-
-Extended capability fields contain any additional domain specific details and/or restrictions of the capability.
-
-``` ipldsch
-type Extension = { String: Any }
-```
-
-## 2.3 Fact
-
-``` ipldsch
-type Fact { String: Any }
-```
-
-## 2.4 Resource
+### 2.2.1 Resource
 
 The resource pointer MUST be formatted as a [URI](https://www.rfc-editor.org/rfc/rfc3986).
 
@@ -86,7 +72,7 @@ The resource pointer MUST be formatted as a [URI](https://www.rfc-editor.org/rfc
 type Resource = String
 ```
 
-## 2.5 Ability
+### 2.2.2 Ability
 
 Abilities MUST be lowercase, and MUST be namespaced with `/` delimeters. Abilities SHOULD have at least one path segment.
 
@@ -94,15 +80,23 @@ Abilities MUST be lowercase, and MUST be namespaced with `/` delimeters. Abiliti
 type Ability = String
 ```
 
-## 2.6 DID
+### 2.2.3 Extensions
 
-DIDs MUST be encoded as [DID](https://www.w3.org/TR/did-core/)s. The [`did:key` method](https://w3c-ccg.github.io/did-method-key/) is RECOMMENDED as it is self-contained.
+The extended capability field is OPTIONAL. When present, it MUST contain any additional domain specific details and/or restrictions of the capability. 
 
 ``` ipldsch
-type DID = String
+type Extension = { String: Any }
 ```
 
-## 2.7 Proof
+## 2.3 Fact
+
+Facts MUST be structured as maps with string keys.
+
+``` ipldsch
+type Fact { String: Any }
+```
+
+## 2.4 Proof
 
 As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be inlined via the [identity multihash (`0x00`)](https://github.com/multiformats/multicodec/blob/master/table.csv#L2) CID.
 
@@ -110,9 +104,9 @@ As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be
 &UCAN
 ```
 
-## 2.8 Signature
+## 2.5 Signature
 
-The signature MUST be computed by first encoding as a [base64url JWT](#3-jwt-canonicalization), and then signed with the issuer's private key.
+The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-canonicalization), and then signed with the issuer's private key.
 
 ``` ipldsch
 type Signature = Bytes
@@ -126,13 +120,13 @@ To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per the [
 
 ## 3.1 Encoding Header
 
-When serialized to JWT, an encoding header MUST be included in the format: `enc: "jcs"`. This signals that the UCAN was intended to be encoding agnostic, and that a JWT may be reencoded. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
+When serialized to JWT, an encoding header MUST be included in the format: `"enc":"JCS"`. This signals that the UCAN was intended to be encoding agnostic, and that a JWT may be reencoded. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
 
 ### 3.1.1 Example
 
 ``` javascript
-{"alg":"RS256","enc":"jcs","typ":"JWT","ucv":"0.9.0"}
-            /* ^^^^^^^^^^^ */
+{"alg":"RS256","enc":"JCS","typ":"JWT","ucv":"0.9.0"}
+//             ^^^^^^^^^^^
 ```
 
 # 4 Acknowledgements
