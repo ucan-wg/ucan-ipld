@@ -15,7 +15,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 # 0 Abstract
 
-[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consisent, highly general data model for content addressed linked data forming any DAG. This consistent format provides a convenient pivot between many serializations of the same data. Being a chained token model, UCANs can be very naturally expressed via IPLD. However, JWTs are not determinstic due to whitespace and key ordering. This specification defines an IPLD Schema for UCAN, and a canonical JWT serialization for compatibility with all other clients.
+[Interplanetary Linked Data (IPLD)](https://ipld.io/) is a consistent, highly general data model for content addressed linked data forming any DAG. This consistent format provides a convenient pivot between many serializations of the same data. Being a chained token model, UCANs can be very naturally expressed via IPLD. However, JWTs are not determinstic due to whitespace and key ordering. This specification defines an IPLD Schema for UCAN, and a canonical JWT serialization for compatibility with all other clients.
 
 # 1 Motivation
 
@@ -114,13 +114,13 @@ type Signature = Bytes
 
 # 3 JWT Canonicalization
 
-Per the core UCAN spec, all implementations MUST support JWT encoding. This provides a common representation that all implementations can understand. JWT canonicalization allows for an IPLD UCAN to be expressed as a JWT, retain the JWT signature scheme, and so on for compatibilty, while retaining the ability to translate into other formats for storage or transmission among IPLD-enabled peers.
+Per the core UCAN spec, all implementations MUST support JWT encoding. This provides a common representation that all implementations can understand. JWT canonicalization allows for an IPLD UCAN to be expressed as a JWT, retain the JWT signature scheme, and so on for compatibility, while retaining the ability to translate into other formats for storage or transmission among IPLD-enabled peers.
 
 To canonicalize an IPLD UCAN to JWT, the JSON segments MUST be encoded per the [JSON Canonicalization Scheme (JCS)](https://www.rfc-editor.org/rfc/rfc8785), encoded as unpadded [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5), and joined with `.`s.
 
 ## 3.1 Encoding Header
-
-When serialized to JWT, an encoding header MUST be included in the format: `"enc":"JCS"`. This signals that the UCAN was intended to be encoding agnostic, and that a JWT may be reencoded. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
+ 
+When serialized to JWT, an encoding header MUST be included in the format: `"enc":"JCS"`. Note that while it is possible to produce an otherwise spec conformant UCAN, this MUST be treated as raw bytes, not IPLD.
 
 ### 3.1.1 Example
 
@@ -129,6 +129,6 @@ When serialized to JWT, an encoding header MUST be included in the format: `"enc
 //             ^^^^^^^^^^^
 ```
 
-# 4 Acknowledgements
+# 4 Acknowledgments
 
 Many thanks to [Joel Thorstensson](https://github.com/oed) and [Sergey Ukustov](https://github.com/ukstv) at [3Box Labs](https://3boxlabs.com/) for their feedback on the encoding, and considerations on how it would interact with [SIWE](https://eips.ethereum.org/EIPS/eip-4361).
