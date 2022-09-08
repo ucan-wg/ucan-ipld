@@ -28,22 +28,22 @@ Unlike a JWT, the IPLD encoding of UCAN does not require separate header, claims
 
 ```ipldsch
 type UCAN struct {
-  version String
+  v String 
 
-  issuer DID
-  audience DID
-  signature Signature
+  iss DID
+  aud DID 
+  sig Signature
 
-  capabilities [Capability]
-  proofs [&UCAN]
-  expiration Int
+  att [Capability] 
+  prf [&UCAN]
+  exp Int
 
-  facts [Fact]
-  nonce optional String
-  notBefore optional Int
+  fct [Fact]
+  nnc optional String
+  nbf optional Int
 } representation map {
-  field facts default []
-  field proofs default []
+  field fct default []
+  field prf default []
 }
 ```
 
