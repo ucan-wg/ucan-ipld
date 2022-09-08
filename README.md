@@ -28,7 +28,7 @@ Unlike a JWT, the IPLD encoding of UCAN does not require separate header, claims
 
 ```ipldsch
 type UCAN struct {
-  v String 
+  ucv String 
 
   iss DID
   aud DID 
