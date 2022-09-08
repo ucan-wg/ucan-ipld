@@ -52,16 +52,19 @@ type UCAN struct {
 DIDs MUST be encoded as [DID](https://www.w3.org/TR/did-core/)s. The [`did:key` method](https://w3c-ccg.github.io/did-method-key/) is RECOMMENDED as it is self-contained.
 
 ``` ipldsch
-type DID = String
+type DID struct {
+  m String
+  i Bytes
+}
 ```
 
 ## 2.2 Capability
 
 ``` ipldsch
 type Capability struct {
-  with Resource
-  can Ability
-  extension optional Extension
+  r Resource
+  a Ability
+  e optional Extension
 } representation map
 ```
 
