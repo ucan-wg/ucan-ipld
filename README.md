@@ -53,8 +53,8 @@ DIDs MUST be encoded as [DID](https://www.w3.org/TR/did-core/)s. The [`did:key` 
 
 ``` ipldsch
 type DID struct {
-  m String
-  i Bytes
+  m String # Method
+  i String # Method-specific identifier
 }
 ```
 
