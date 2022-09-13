@@ -32,7 +32,7 @@ type UCAN struct {
 
   iss DID
   aud DID 
-  sig Signature
+  s Signature
 
   att [Capability] 
   prf [&UCAN]
