@@ -49,3 +49,5 @@ v0
 validator
 validators
 whitespace
+bytesprefix
+varisig
