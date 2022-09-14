@@ -45,7 +45,8 @@ type Principal union {
   | P256       "0x1200"
   | P384       "0x1201"
   | P521       "0x1202"
-  
+  | X25519 "0xec"
+  | BLS12381G1 "0xea"
   -- To accomodate additional DID methods we represent those as UTF8 encoding
   -- of the DID omitting `did:` prefix itself. E.g. `did:dns:ucan.xyz` can be
   -- represented as [0xd1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
