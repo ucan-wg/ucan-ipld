@@ -98,7 +98,7 @@ Abilities MUST be lowercase, and MUST be namespaced with `/` delimeters. Abiliti
 type Ability = String
 ```
 
-### 2.2.3 NonNormativeFields
+### 2.2.3 `nb` Non-Normative Fields
 
 The `nb` capability field is OPTIONAL. When present, it MUST contain any additional domain specific details and/or restrictions of the capability. 
 
