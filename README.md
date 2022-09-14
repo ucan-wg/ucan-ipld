@@ -28,13 +28,15 @@ Unlike a JWT, the IPLD encoding of UCAN does not require separate header, claims
 
 ```ipldsch
 type UCAN struct {
-  v String 
+  v String
 
-  iss DID
-  aud DID 
-  s Signature
+  iss Principal
+  aud Principal
+  sig Signature
 
-  att [Capability] 
+  att [Capability]
+  -- All proofs are links, however you could still inline proof
+  -- by using CID with identity hashing algorithm
   prf [&UCAN]
   exp Int
 
@@ -47,25 +49,37 @@ type UCAN struct {
 }
 ```
 
-## 2.1 DID
+## 2.1 Principal
 
-DIDs MUST be encoded as [DID](https://www.w3.org/TR/did-core/)s. The [`did:key` method](https://w3c-ccg.github.io/did-method-key/) is RECOMMENDED as it is self-contained.
+Principals MUST use [bytesprefix](https://ipld.io/docs/schemas/using/authoring-guide/#bytesprefix-unions-for-bytes) representation of [DID](https://www.w3.org/TR/did-core/)s. Primary [`did:key` method](https://w3c-ccg.github.io/did-method-key/) MUST use (more compact) key specific variant representation. Additional DID methods MAY use `DID` variant representation.
 
 ``` ipldsch
-type DID struct {
-  m String # Method
-  i String # Method-specific identifier
-}
+type Principal union {
+  -- Specification defines principals in terms of did:key's (that are multicodec
+  -- identifier for the public key type followed by the raw bytes of the key)
+  -- we represent those as raw public key bytes prefixed with public key multiformat
+  -- code.
+  | Ed25519    "0xed"
+  | RSA        "0x1205"
+  | P256       "0x1200"
+  | P384       "0x1201"
+  | P521       "0x1202"
+  
+  -- To accomodate additional DID methods we represent those as UTF8 encoding
+  -- of the DID omitting `did:` prefix itself. E.g. `did:dns:ucan.xyz` can be
+  -- represented as [0xd1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
+  | DID "0xd1d"
+} representation bytesprefix
 ```
 
 ## 2.2 Capability
 
 ``` ipldsch
 type Capability struct {
-  r Resource
-  a Ability
-  e optional Extension
-} representation map
+  with Resource
+  can Ability
+  nb optional NonNormativeFields
+}
 ```
 
 ### 2.2.1 Resource
@@ -84,12 +98,12 @@ Abilities MUST be lowercase, and MUST be namespaced with `/` delimeters. Abiliti
 type Ability = String
 ```
 
-### 2.2.3 Extensions
+### 2.2.3 `nb` Non-Normative Fields
 
-The extended capability field is OPTIONAL. When present, it MUST contain any additional domain specific details and/or restrictions of the capability. 
+The `nb` capability field is OPTIONAL. When present, it MUST contain any additional domain specific details and/or restrictions of the capability. 
 
 ``` ipldsch
-type Extension = { String: Any }
+type NonNormativeFields = { String: Any }
 ```
 
 ## 2.3 Fact
@@ -110,10 +124,26 @@ As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be
 
 ## 2.5 Signature
 
-The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-canonicalization), and then signed with the issuer's private key.
+The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-canonicalization), and then signed with the issuer's private key. Signatures MUST be encoded as the _varsig_ multiformat representation `<varint sig_alg_code><vairint sig_size><bytes sig_output>`. _Varsig_ multiformat codes SHOULD be [registered multicodec codes](https://github.com/multiformats/multicodec). Unregistered signature types MAY be added via the `NonStandardSignature` prefix.
 
 ``` ipldsch
-type Signature = Bytes
+type Signature union {
+  -- Alogorithms here are expected to be valid "varsig" multiformat codes.
+  | EdDSA      "0xd001"
+  | RS256      "0xd002"
+  | ES256      "0xd003"
+  -- Algorithms that do not have registered multiformat code, could be prefixed
+  -- with 0xd000 varint. 
+  | NonStandardSiganture "0xd000"
+} representation bytesprefix
+
+-- UCAN-IPLD spec will register non standard signature algorithms here and
+-- recommend registering them as valid "varsig" multiformat codes to remove
+-- need for 0xd000 varint prefix. Implementatations MAY be also augmented
+-- with additional non standard signature types.
+type NonStandardSiganture union {
+  | EIP191      "0xd004"
+} representation bytesprefix
 ```
 
 # 3 JWT Canonicalization
