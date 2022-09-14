@@ -32,7 +32,7 @@ type UCAN struct {
 
   iss Principal
   aud Principal
-  sig Signature
+  s Signature
 
   att [Capability]
   -- All proofs are links, however you could still inline proof
