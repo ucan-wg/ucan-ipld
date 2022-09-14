@@ -1,29 +1,29 @@
 type UCAN struct {
-  version String
+  v String
 
-  issuer DID
-  audience DID
-  signature Signature
+  iss Principal
+  aud Principal
+  sig Signature
 
-  capabilities [Capability]
+  att [Capability]
   -- All proofs are links, however you could still inline proof
   -- by using CID with identity hashing algorithm
-  proofs [&UCAN]
-  expiration Int
+  prf [&UCAN]
+  exp Int
 
-  facts [Fact]
-  nonce optional String
-  notBefore optional Int
+  fct [Fact]
+  nnc optional String
+  nbf optional Int
 } representation map {
-  field facts default []
-  field proofs default []
+  field fct default []
+  field prf default []
 }
 
 type Capability struct {
   with Resource
   can Ability
   -- Any additional domain specific details and/or restrictions of the capability
-  extension { String: Any }
+  nb { String: Any }
 }
 
 type Fact { String: Any }
@@ -34,11 +34,47 @@ type Resource = String
 -- Must be all lower-case `/` delimeted with at least one path segment
 type Ability = String
 
+
+type Principal union {
+  -- Specification defines principals in terms of did:key's (that are multicodec
+  -- identifier for the public key type followed by the raw bytes of the key)
+  -- we represent those as raw public key bytes prefixed with public key multiformat
+  -- code.
+  | Ed25519    "0xed"
+  | RSA        "0x1205"
+  | P256       "0x1200"
+  | P384       "0x1201"
+  | P521       "0x1202"
+  
+  -- To accomodate additional DID methods we represent those as UTF8 encoding
+  -- of the DID omitting `did:` prefix itself. E.g. `did:dns:ucan.xyz` can be
+  -- represented as [0xd1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
+  | DID "0xd1d"
+} representation bytesprefix
+
+
 -- Signature is computed by
--- 1. deriving JWT header & payload using DAG-JSON (to achieve for hash consitency)
+-- 1. deriving JWT header & payload using DAG-JSON omitting all empty
+--    optional fields (to achieve for hash consitency)
 -- 2. formating it into base64 string
 -- 3. Signing via issuers private key
-type Signature = Bytes
+-- Signatures are encoded into a "varsig" multiformat representation:
+-- <varint sig_alg_code><vairint multihash_code><varint multihash_size><bytes sig_output>
+type Signature union {
+  -- Alogorithms here are expected to be valid "varsig" multiformat codes.
+  | EdDSA      "0xd001"
+  | RS256      "0xd002"
+  | ES256      "0xd003"
+  -- Algorithms that do not have registered multiformat code, could be prefixed
+  -- with 0xd000 varint. 
+  | NonStandardSiganture "0xd000"
+} representation bytesprefix
 
--- did:key encoded as a DID
-type DID = String
+-- UCAN-IPLD spec will register non standard signature algorithms here and
+-- recommend registering them as valid "varsig" multiformat codes to remove
+-- need for 0xd000 varint prefix. Implementatations MAY be also augmented
+-- with additional non standard signature types.
+type NonStandardSiganture union {
+  | EIP191      "0xd004"
+} representation bytesprefix
+
