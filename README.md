@@ -124,7 +124,7 @@ As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be
 
 ## 2.5 Signature
 
-The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-canonicalization), and then signed with the issuer's private key. Signatures MUST be encoded into a _varisig_ multiformat representation `<varint sig_alg_code><vairint sig_size><bytes sig_output>`. The _varsig_ multiformat codes are expected to be [registered multicodec codes](https://github.com/multiformats/multicodec). Not registered signature types MAY be added under `NonStandardSignature`s.
+The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-canonicalization), and then signed with the issuer's private key. Signatures MUST be encoded into a _varsig_ multiformat representation `<varint sig_alg_code><vairint sig_size><bytes sig_output>`. The _varsig_ multiformat codes are expected to be [registered multicodec codes](https://github.com/multiformats/multicodec). Not registered signature types MAY be added under `NonStandardSignature`s.
 
 ``` ipldsch
 type Signature union {
