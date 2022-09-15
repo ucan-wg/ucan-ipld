@@ -55,10 +55,10 @@ Principals MUST use [bytesprefix](https://ipld.io/docs/schemas/using/authoring-g
 
 ``` ipldsch
 type Principal union {
-  -- Specification defines principals in terms of did:key's (that are multicodec
-  -- identifier for the public key type followed by the raw bytes of the key)
-  -- we represent those as raw public key bytes prefixed with public key multiformat
-  -- code.
+  -- This specification defines principals in terms of `did:key`s (multicodec
+  -- identifiers for the public key type followed by the raw bytes of the key).
+  -- We represent those as raw public key bytes prefixed with public key 
+  -- multiformat code.
   | secp256k1  "0xe7"
   | BLS12381G1 "0xea"
   | BLS12381G2 "0xeb"
