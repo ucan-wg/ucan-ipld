@@ -149,7 +149,7 @@ type Signature union {
 -- need for 0xd000 varint prefix. Implementatations MAY be also augmented
 -- with additional non standard signature types.
 type NonStandardSiganture union {
-  | EIP191      "0xd004"
+  -- Example: EIP1271 "0xd01271"
 } representation bytesprefix
 ```
 
