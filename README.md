@@ -128,13 +128,14 @@ The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-
 
 ``` ipldsch
 type Signature union {
-  -- Alogorithms here are expected to be valid "varsig" multiformat codes.
-  | EdDSA      "0xd001"
-  | RS256      "0xd002"
-  | ES256      "0xd003"
-  -- Algorithms that do not have registered multiformat code, could be prefixed
-  -- with 0xd000 varint. 
-  | NonStandardSiganture "0xd000"
+  -- Algorithms here are expected to be valid "varsig" multiformat codes.
+  | NonStandard "0xd000"
+  | RS256       "0xd001"
+  | EdDSA       "0xd0ed"
+  | ES256       "0xdec2"
+  | ES256K      "0xdecd" -- secp256k1
+  | BLS12381    "0xdb15"
+  | EIP191      "0xd191"
 } representation bytesprefix
 
 -- UCAN-IPLD spec will register non standard signature algorithms here and
