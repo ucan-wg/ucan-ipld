@@ -59,16 +59,19 @@ type Principal union {
   -- identifier for the public key type followed by the raw bytes of the key)
   -- we represent those as raw public key bytes prefixed with public key multiformat
   -- code.
+  | secp256k1  "0xe7"
+  | BLS12381G1 "0xea"
+  | BLS12381G2 "0xeb"
   | Ed25519    "0xed"
-  | RSA        "0x1205"
   | P256       "0x1200"
   | P384       "0x1201"
-  | P521       "0x1202"
+  | P512       "0x1202"
+  | RSA        "0x1205"
   
   -- To accomodate additional DID methods we represent those as UTF8 encoding
   -- of the DID omitting `did:` prefix itself. E.g. `did:dns:ucan.xyz` can be
   -- represented as [0xd1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
-  | DID "0xd1d"
+  | DID "0x0d1d"
 } representation bytesprefix
 ```
 
@@ -130,11 +133,14 @@ The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-
 type Signature union {
   -- Algorithms here are expected to be valid "varsig" multiformat codes.
   | NonStandard "0xd000"
-  | EdDSA       "0xd0ed"
-  | RS256       "0xd125"
-  | ES256       "0xd120"
   | ES256K      "0xd0e7" -- secp256k1
-  | BLS12381    "0xd0ea"
+  | BLS12381G1  "0xd0ea" -- NB: G1 is a signature for BLS-12381 G2
+  | BLS12381G2  "0xd0eb" -- NB: G2 is a signature for BLS-12381 G1
+  | EdDSA       "0xd0ed"
+  | ES256       "0xd01200"
+  | ES384       "0xd01201"
+  | ES512       "0xd01202"
+  | RS256       "0xd01205"
   | EIP191      "0xd191"
 } representation bytesprefix
 
