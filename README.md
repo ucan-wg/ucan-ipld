@@ -149,7 +149,7 @@ type Signature union {
 
 Nonstandard signature algorithms MAY be used, but are NOT RECOMMENDED as they are not widely interoperable.
 
-The `0xd000` prefix MUST be used if a nonstandard signature is used. Nonstandrad signatures MUST be additionally prefixed with a varint of the signature length, and the UTF-8 UCAN `alg` field appended afterwards.
+The `0xd000` prefix MUST be used if a nonstandard signature is used. Nonstandard signatures MUST be additionally prefixed with a varint of the signature length, and the UTF-8 UCAN `alg` field appended afterwards.
 
 ```
 <varint 0xd000><varint sig_size><bytes sig><utf8 alg>`

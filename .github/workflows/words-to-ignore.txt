@@ -21,6 +21,7 @@ UCAN
 UCAN's
 UCANs
 URI
+UTF
 Ukustov
 Validators
 Zelenka
@@ -51,5 +52,6 @@ url
 v0
 validator
 validators
+varint
 varsig
 whitespace
