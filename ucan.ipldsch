@@ -80,6 +80,8 @@ type Signature union {
 -- recommend registering them as valid "varsig" multiformat codes to remove
 -- need for 0xd000 varint prefix. Implementatations MAY be also augmented
 -- with additional non standard signature types.
-type NonStandardSiganture union {
-  -- Example: EIP1271 "0xd01271"
-} representation bytesprefix
+--
+-- The `0xd000` prefix MUST be used if a nonstandard signature is used.
+-- Nonstandrad signatures MUST be additionally prefixed with a varint of
+-- the signature length, and the UTF-8 UCAN `alg` field appended afterwards.
+-- Symbolically: <varint 0xd000><varint sig_size><bytes sig><utf8 alg>.

@@ -143,14 +143,16 @@ type Signature union {
   | RS256       "0xd01205"
   | EIP191      "0xd191"
 } representation bytesprefix
+```
 
--- UCAN-IPLD spec will register non standard signature algorithms here and
--- recommend registering them as valid "varsig" multiformat codes to remove
--- need for 0xd000 varint prefix. Implementatations MAY be also augmented
--- with additional non standard signature types.
-type NonStandardSiganture union {
-  -- Example: EIP1271 "0xd01271"
-} representation bytesprefix
+### 2.5.1 Nonstandard Signatures
+
+Nonstandard signature algorithms MAY be used, but are NOT RECOMMENDED as they are not widely interoperable.
+
+The `0xd000` prefix MUST be used if a nonstandard signature is used. Nonstandrad signatures MUST be additionally prefixed with a varint of the signature length, and the UTF-8 UCAN `alg` field appended afterwards.
+
+```
+<varint 0xd000><varint sig_size><bytes sig><utf8 alg>`
 ```
 
 # 3 JWT Canonicalization
