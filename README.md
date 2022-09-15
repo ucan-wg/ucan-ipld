@@ -174,3 +174,5 @@ Validators that have not implemented this specification MUST be provided JWT-enc
 # 4 Acknowledgments
 
 Many thanks to [Joel Thorstensson](https://github.com/oed) and [Sergey Ukustov](https://github.com/ukstv) at [3Box Labs](https://3boxlabs.com/) for their feedback on the encoding, and considerations on how it would interact with [SIWE](https://eips.ethereum.org/EIPS/eip-4361).
+
+Thanks to [Philipp Krüger](https://github.com/matheus23) for his feedback on canonicalization signalling.
