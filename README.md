@@ -130,11 +130,11 @@ The signature MUST be computed by first encoding it as a [canonical JWT](#3-jwt-
 type Signature union {
   -- Algorithms here are expected to be valid "varsig" multiformat codes.
   | NonStandard "0xd000"
-  | RS256       "0xd001"
   | EdDSA       "0xd0ed"
-  | ES256       "0xdec2"
-  | ES256K      "0xdecd" -- secp256k1
-  | BLS12381    "0xdb15"
+  | RS256       "0xd125"
+  | ES256       "0xd120"
+  | ES256K      "0xd0e7" -- secp256k1
+  | BLS12381    "0xd0ea"
   | EIP191      "0xd191"
 } representation bytesprefix
 
