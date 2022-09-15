@@ -70,7 +70,7 @@ type Principal union {
   
   -- To accomodate additional DID methods we represent those as UTF8 encoding
   -- of the DID omitting `did:` prefix itself. E.g. `did:dns:ucan.xyz` can be
-  -- represented as [0xd1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
+  -- represented as [0x0d1d, ...new TextEncoder().encode('dns:ucan.xyz')] bytes.
   | DID "0x0d1d"
 } representation bytesprefix
 ```
