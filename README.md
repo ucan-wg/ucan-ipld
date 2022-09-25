@@ -51,7 +51,7 @@ type UCAN struct {
 
 ## 2.1 Principal
 
-Principals MUST use the [bytesprefix](https://ipld.io/docs/schemas/using/authoring-guide/#bytesprefix-unions-for-bytes) representation of [DID](https://www.w3.org/TR/did-core/)s. The primary [`did:key` method](https://w3c-ccg.github.io/did-method-key/) MUST use key-specific representation, such as `0xe7` and `0x1200`. Additional DID methods MAY use the open `DID` representation `0x0d1d`.
+Principals MUST use the [bytesprefix](https://ipld.io/docs/schemas/using/authoring-guide/#bytesprefix-unions-for-bytes) representation of [DID](https://www.w3.org/TR/did-core/)s. The primary [`did:key` method](https://w3c-ccg.github.io/did-method-key/) MUST use the relevant key-specific representation, such as `0xe7` and `0x1200`. Additional DID methods MAY use the extensible `DID` representation `0x0d1d`.
 
 ``` ipldsch
 type Principal union {
