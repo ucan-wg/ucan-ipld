@@ -64,7 +64,7 @@ Principals MUST use the [multidid] representation of [DID]s.
 
 ## 2.2 Capabilities
 
-Capabilities UST be represented as a nested map from resources to abilities to non-normative caveats.
+Capabilities MUST be represented as a nested map from resources to abilities to non-normative caveats.
 
 ``` ipldsch
 type Capabilities = { Resource : { Ability: [ CaveatsMap ] } }
