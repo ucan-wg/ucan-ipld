@@ -67,7 +67,7 @@ Principals MUST use the [multidid] representation of [DID]s.
 Capabilities UST be represented as a nested map from resources to abilities to non-normative caveats.
 
 ``` ipldsch
-type Capabilities = { Resource : { Ability: [ Caveats ] } }
+type Capabilities = { Resource : { Ability: [ CaveatsMap ] } }
 ```
 
 ### 2.2.1 Resource
@@ -91,7 +91,7 @@ type Ability = String
 The inclusion of caveats is OPTIONAL. When present, this map MUST contain any additional domain specific details and/or restrictions of the capability. 
 
 ``` ipldsch
-type Caveats = { String: Any }
+type CaveatsMap = { String: Any }
 ```
 
 ## 2.3 Fact
