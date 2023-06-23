@@ -37,23 +37,21 @@ Unlike a JWT, the IPLD encoding of UCAN does not require separate header, claims
 
 ```ipldsch
 type UCAN struct {
-  v String
+  v            String
 
-  iss Principal
-  aud Principal
-  s Signature
+  iss          Principal
+  aud          Principal
 
-  cap Capabilities
+  cap          Capabilities
+  prf          [&UCAN]
 
-  -- All proofs are links, however you could still inline proof
-  -- by using CID with identity hashing algorithm
-  prf [&UCAN]
-
-  fct [Fact]
   nnc optional String
+  fct          [Fact]
 
   nbf optional Int
   exp          Int
+
+  s            Signature
 } representation map {
   field fct default []
   field prf default []
@@ -66,7 +64,7 @@ Principals MUST use the [multidid] representation of [DID]s.
 
 ## 2.2 Capabilities
 
-Capabilities are a map ____________.
+Capabilities UST be represented as a nested map from resources to abilities to non-normative caveats.
 
 ``` ipldsch
 type Capabilities = { Resource : { Ability: [ Caveats ] } }
@@ -114,8 +112,7 @@ As of UCAN 0.9, all proofs MUST be given as links (CIDs). Note that UCANs MAY be
 
 ## 2.5 Signature
 
-The signature MUST be computed by first encoding it as a [canonical JWT], and then signed with the issuer's private key. Signatures MUST be encoded as the _varsig_ multiformat representation `<varint sig_alg_code><vairint sig_size><bytes sig_output>`. <!---------------- FIXME      _Varsig_ multiformat codes SHOULD be [registered multicodec codes](https://github.com/multiformats/multicodec). Unregistered signature types MAY be added via the `NonStandardSignature` prefix 
-  -->
+The signature MUST be computed by first encoding it as a [canonical JWT], and then signed with the issuer's private key. Signatures MUST be encoded as the [varsig] multiformat representation `<varint sig_alg_code><vairint sig_size><bytes sig_output>`.
 
 # 3 Acknowledgments
 
