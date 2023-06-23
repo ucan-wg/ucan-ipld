@@ -39,6 +39,7 @@ expede
 inlined
 interpretable
 multicodec
+multidid
 multiformat
 multihash
 namespaced
